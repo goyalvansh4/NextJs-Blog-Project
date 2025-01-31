@@ -1,16 +1,34 @@
 'use client';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import React from 'react';
+import React,{useState} from 'react';
+
 
 const AddPost = () => {
+  const [error,setError] = useState(null)
   const formik = useFormik({
     initialValues: {
       title: "",
       description: ""
     },
-    onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async(values) => {
+      const response = await fetch("/api/posts",{
+        method:'POST',
+        headers:{
+          'content-Type':'application/json'
+        },
+        body:JSON.stringify(values)
+      });
+      let res=await response.json();
+      try{
+        if(res.ok){
+          formik.resetForm();
+        }
+      }
+      catch(error){
+        throw new Error(error.message) 
+      }
+      
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Title is required"),
