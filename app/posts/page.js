@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import Loading from '@/app/posts/loading'
 const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
@@ -25,7 +26,7 @@ const Posts = () => {
     };
     fetchPosts();
   }, []);
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading/>;
   if (error) return <div>Error: {error}</div>;
   return (
     <div className="max-w-4xl mx-auto p-4 bg-white shadow-md rounded-lg">
